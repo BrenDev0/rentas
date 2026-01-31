@@ -14,7 +14,7 @@ def create_fastapi_app():
     # CORS setup
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["http://localhost:4200"],
+        allow_origins=["http://localhost:4200", "http://localhost:8000"],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
@@ -34,7 +34,7 @@ def create_fastapi_app():
         print(str(exc))
         return JSONResponse(
             status_code=500,
-            content={"errors": ["Unable to process request  at this time"]}
+            content={"errors": ["Unable to process request at this time"]}
         )
 
 
@@ -44,7 +44,7 @@ def create_fastapi_app():
         ## Health check 
         This endpoints verifies server status.
         """
-        return {"status": "ConvertIA ok"}
+        return {"status": "Renters ok"}
     
   
     graphql_router = get_strawberry_graphql_router()
