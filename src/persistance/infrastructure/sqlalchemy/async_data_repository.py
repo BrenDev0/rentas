@@ -1,50 +1,183 @@
-from sqlalchemy import select
-from typing import TypeVar, List, Type
+import logging
+from sqlalchemy import select, update, delete, insert
+from uuid import UUID
+from typing import TypeVar, List, Type, Union, Optional, Dict, Any
 from src.persistance.domain.async_data_repository import AsyncDataRepository
 from src.persistance.infrastructure.sqlalchemy.setup import AsyncSessionFactory
+
+logger = logging.getLogger(__name__)
 
 E = TypeVar("E") # Entity/pydantic
 M = TypeVar("M") # sqlalchemy model
 
 class AsyncSqlAlchemyDataRepositoy(AsyncDataRepository[E, M]):
-    def __init__(self, model: Type[M], entity: Type[E]):
+    def __init__(self, model: Type[M]):
         self.__model = model
-        self.__entity = entity
         self.__session_factory = AsyncSessionFactory
 
-    async def select_one(self, key, value) -> E | None:
-        stmt = select(self.__model).where(getattr(self.__model, key) == value)
+    async def create(
+        self, 
+        entity: E
+    ):
+        try:
+            async with self.__session_factory() as session:
 
+                model = self._to_model(entity)
+                stmt = insert(self.__model).values(**model)
+
+                result = await session.execute(stmt)
+        
+        except Exception as e:
+            logger.error(f"Error Inserting {self.__model.__name__}: {e}", exc_info=True)
+            await session.rollback()
+            raise
+
+
+
+    async def select_one(
+        self, 
+        key: str, 
+        value: Union[str, int, UUID]
+    ) -> E | None:
         async with self.__session_factory() as session:
+            stmt = select(self.__model).where(getattr(self.__model, key) == value)
+
             result = await session.execute(stmt).scalar_one_or_none()
 
             return self._to_entity(result) if result else None
 
 
-    async def select_many(self, key, value) -> List[E] | None:
-        stmt = select(self.__model).where(getattr(self.__model, key) == value)
-
+    async def select_many(
+        self, 
+        key: str, 
+        value: Union[str, int, UUID], 
+        limit: Optional[int] = None, 
+        offset: Optional[int] = None
+    ) -> List[E] | None:
         async with self.__session_factory() as session:
+            stmt = select(self.__model).where(getattr(self.__model, key) == value)
+
+            if limit:
+                stmt.limit(limit)
+
+            if offset:
+                stmt.offset(offset)
+
             result = await session.execute(stmt).scalars().all()
 
-            result = [
+            return [
                 self._to_entity(row) for row in result 
             ] if result else None
 
-    async def select_all(self):
-        pass
+    async def select_all(
+        self, 
+        key: str, 
+        value: Union[str, int, UUID], 
+        limit: Optional[int] = None, 
+        offset: Optional[int] = None
+    ) -> List[E] | None:
+        async with self.__session_factory() as session:
+            stmt = select(self.__model).where(getattr(self.__model, key) == value)
 
-    async def update_one(self, key, value) -> E | None:
-        pass
+            if limit:
+                stmt.limit(limit)
+            
+            if offset:
+                stmt.offset(offset)
+            
+            result = await session.execute(stmt)
 
-    async def update_many(self, key, value) -> List[E] | None:
-        pass
+            return [
+                self._to_entity(row) for row in result
+            ] if result else None
 
-    async def delete_one(self, key, value) -> E | None:
-        pass
+    async def update_one(
+        self, 
+        key: str, 
+        value: Union[str, int, UUID], 
+        changes: Dict[str, Any]
+    ) -> E | None:
+        async with self.__session_factory() as session:
+            try:
+                stmt = update(self.__model).where(getattr(self.__model, key) == value).values(**changes).returning(self.__model)
 
-    async def delete_many(self, key, value) -> List[E] | None:
-        pass
+                result = await session.execute(stmt).scalar_one_or_none()
+
+                await session.commit()
+
+                return self._to_entity(result) if result else None
+            
+            except Exception as e:
+                logger.error(f"Error updating {self.__model.__name__}: {e}", exc_info=True)
+                await session.rollback()
+                raise
+
+    async def update_many(
+        self, 
+        key: str, 
+        value: Union[str, int, UUID],
+        changes: Dict[str, Any]
+    ) -> List[E] | None:
+        try:
+            async with self.__session_factory() as session:
+                stmt = update(self.__model).where(getattr(self.__model, key) == value).values(**changes).returning(self.__model)
+
+                result = await session.execute(stmt).scalars().all()
+
+                await session.commit()
+
+                return [
+                    self._to_entity(row) for row in result
+                ] if result else None
+        
+        except Exception as e:
+            logger.error(f"Error Updating {self.__model.__name__}: {e}", exc_info=True)
+            await session.rollback()
+            raise
+
+    async def delete_one(
+        self, 
+        key: str, 
+        value: Union[str, int, UUID]
+    ) -> E | None:
+        try:
+            async with self.__session_factory() as session:
+                stmt = delete(self.__model).where(getattr(self.__model, key) == value)
+
+                result = await session.execute(stmt).scalar_one_or_none()
+
+                await session.commit()
+
+                return self._to_entity(result) if result else None
+        
+        except Exception as e:
+            logger.error(f"Error deleting {self.__model.__name__}: {e}", exc_info=True)
+            await session.rollback()
+            raise
+
+    async def delete_many(
+        self, 
+        key: str, 
+        value: Union[str, int, UUID]
+    ) -> List[E] | None:
+        try:
+            async with self.__session_factory() as session:
+                stmt = delete(self.__model).wherer(getattr(self.__model, key) == value)
+
+                result = await session.execute(stmt).scalars().all()
+
+                await session.commit()
+
+                return [
+                    self._to_entity(row) for row in result
+                ] if result else None
+        
+        except Exception as e:
+            logger.error(f"Error deleting {self.__model.__name__}: {e}", exc_info=True)
+            await session.rollback()
+            raise
+
+
 
     def _to_model(self, entity: E) -> M:
         raise NotImplementedError
