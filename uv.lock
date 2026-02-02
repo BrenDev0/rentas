@@ -273,7 +273,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "fastapi" },
-    { name = "sqlalchemy" },
+    { name = "sqlalchemy", extra = ["asyncio"] },
     { name = "strawberry-graphql", extra = ["fastapi"] },
     { name = "uvicorn" },
 ]
@@ -281,7 +281,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "fastapi", specifier = ">=0.128.0" },
-    { name = "sqlalchemy", specifier = ">=2.0.46" },
+    { name = "sqlalchemy", extras = ["asyncio"], specifier = ">=2.0.46" },
     { name = "strawberry-graphql", extras = ["fastapi"], specifier = ">=0.289.8" },
     { name = "uvicorn", specifier = ">=0.40.0" },
 ]
@@ -337,6 +337,11 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/fc/a1/9c4efa03300926601c19c18582531b45aededfb961ab3c3585f1e24f120b/sqlalchemy-2.0.46-py3-none-any.whl", hash = "sha256:f9c11766e7e7c0a2767dda5acb006a118640c9fc0a4104214b96269bfb78399e", size = 1937882, upload-time = "2026-01-21T18:22:10.456Z" },
 ]
 
+[package.optional-dependencies]
+asyncio = [
+    { name = "greenlet" },
+]
+
 [[package]]
 name = "starlette"
 version = "0.50.0"
@@ -352,7 +357,7 @@ wheels = [
 
 [[package]]
 name = "strawberry-graphql"
-version = "0.290.0"
+version = "0.291.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cross-web" },
@@ -361,9 +366,9 @@ dependencies = [
     { name = "python-dateutil" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/68/0e/e9681de238cdbb712d3aabc1bd59898cc23cb9f6ff1da2af707a1098361f/strawberry_graphql-0.290.0.tar.gz", hash = "sha256:82f8e4792f8e3487fbf5136bc9e78631267efc3c538372da3ae4c7f021293495", size = 217617, upload-time = "2026-01-31T16:53:21.756Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/db/f1/361ca6041b98e574bb26833afc04792fd1c829c326a3b1ee7027db280f88/strawberry_graphql-0.291.0.tar.gz", hash = "sha256:79828fe4c2d6d3ea4eea243f02c114b39f0074f8caea1f1c43557ae9b530ed99", size = 217717, upload-time = "2026-02-01T12:20:22.043Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3a/46/c017f64d2b406642bdb15dbbff489d516a18b602d4df8aa3a7de2b5abaf3/strawberry_graphql-0.290.0-py3-none-any.whl", hash = "sha256:2298f825bc218e45070feee653149470b7f2d3b91b03a7c98e191aeaf13a7ad7", size = 316254, upload-time = "2026-01-31T16:53:23.189Z" },
+    { url = "https://files.pythonhosted.org/packages/65/1c/b3307f421c78ba0578b07abc93dbc07a3bca2da79c79ef6a6e2b027b557d/strawberry_graphql-0.291.0-py3-none-any.whl", hash = "sha256:cc779e41adb0783682109875d8b1232819efa3253e8d925aff983490bb806f77", size = 316384, upload-time = "2026-02-01T12:20:24.081Z" },
 ]
 
 [package.optional-dependencies]
