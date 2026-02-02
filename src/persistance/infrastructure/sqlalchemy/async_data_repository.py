@@ -22,7 +22,14 @@ class AsyncSqlAlchemyDataRepositoy(AsyncDataRepository[E, M]):
 
 
     async def select_many(self, key, value) -> List[E] | None:
-        pass
+        stmt = select(self.__model).where(getattr(self.__model, key) == value)
+
+        async with self.__session_factory() as session:
+            result = await session.execute(stmt).scalars().all()
+
+            result = [
+                self._to_entity(row) for row in result 
+            ] if result else None
 
     async def select_all(self):
         pass
