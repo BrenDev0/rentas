@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 E = TypeVar("E") # Entity/pydantic
 M = TypeVar("M") # sqlalchemy model
 
-class AsyncSqlAlchemyDataRepositoy(AsyncDataRepository[E, M]):
+class AsyncSqlAlchemyDataRepository(AsyncDataRepository[E, M]):
     def __init__(self, model: Type[M]):
         self.__model = model
         self.__session_factory = AsyncSessionFactory

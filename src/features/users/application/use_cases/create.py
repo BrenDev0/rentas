@@ -1,4 +1,5 @@
 from src.persistance.domain import async_data_repository
+from src.features.users.domain import schemas, entities
 
 class CreateUser:
     def __init__(
@@ -10,6 +11,6 @@ class CreateUser:
     
     async def execute(
         self,
-        data: any
+        data: schemas.CreateUserSchema
     ):
         pass
