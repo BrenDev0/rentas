@@ -1,36 +1,49 @@
-from typing import TypeVar, Dict, cast, List, Callable
-from src.di.domain.exceptions import DependencyNotRegistered
+import inspect
 
-T = TypeVar('T')
 class Injector:
-    __instances:  Dict[str, T] = {}
-    __factories: Dict[str, Callable[[], T]] = {}
+    def __init__(self):
+        self._registry = {}
+        self._singletons = {}
 
-    @classmethod
-    def register(cls, key: str, instance: T) -> None:
-        cls.__instances[key] = instance
 
-    @classmethod
-    def register_factory(cls, key: str, factory: Callable[[], T]):
-        cls.__factories[key] = factory
+    def register(self, instance_type, resolve_as=None, *, singleton=True):
+        if not resolve_as:
+            resolve_as = instance_type
 
-    @classmethod
-    def resolve(cls, key: str):
-        if key in cls.__instances:
-            return cls.__instances[key]
+        self._registry[instance_type] = {
+            "resolve_as": resolve_as,
+            "singleton": singleton
+        }
+
+
+    def resolve(self, instance_type):
+        if instance_type in self._singletons:
+            return self._singletons[instance_type]
         
-        if key in cls.__factories:
-            instance = cls.__factories[key]()
-            cls.__instances[key] = instance
-            return cast(T,instance)
+        if instance_type not in self._registry:
+            raise Exception(f"{instance_type} not registered")
         
-        raise DependencyNotRegistered(f"Dependency '{key}' not registerd!")
-    
-    @classmethod
-    def clear(cls) -> None:
-        cls.__instances.clear()
-        cls.__factories.clear()
+        registration = self._registry[instance_type]
+        instance = self._build(instance_type)
 
-    @classmethod
-    def get_instances(cls) -> List[str]:
-        return list(cls.__instances.keys())
+        if registration["singleton"]:
+            self._singletons[instance_type] = instance
+
+        return instance
+
+
+    def _build(self, cls):
+        signature = inspect.signature(cls.__init__)
+        dependencies = []
+
+        for name, params in signature.parameters.items():
+            if name == "self":
+                continue
+
+            dependency_type = params.annotation
+            dependency = self.resolve(dependency_type)
+            dependencies.append(dependencies)
+
+            return cls(*dependencies)
+
+        
