@@ -24,7 +24,8 @@ class Injector:
             raise Exception(f"{instance_type} not registered")
         
         registration = self._registry[instance_type]
-        instance = self._build(instance_type)
+        implementation = registration["resolve_as"]
+        instance = self._build(implementation)
 
         if registration["singleton"]:
             self._singletons[instance_type] = instance
@@ -41,9 +42,15 @@ class Injector:
                 continue
 
             dependency_type = params.annotation
-            dependency = self.resolve(dependency_type)
-            dependencies.append(dependencies)
 
-            return cls(*dependencies)
+            if dependency_type is inspect._empty:
+                raise Exception(
+                    f"Missing type hint for dependency '{name}' in {cls.__name__}"
+                )
+        
+            dependency = self.resolve(dependency_type)
+            dependencies.append(dependency)
+
+        return cls(*dependencies)
 
         
