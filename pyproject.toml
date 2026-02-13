@@ -13,3 +13,8 @@ dependencies = [
     "strawberry-graphql[fastapi]>=0.289.8",
     "uvicorn>=0.40.0",
 ]
+
+[dependency-groups]
+dev = [
+    "dotenv>=0.9.9",
+]

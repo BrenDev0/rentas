@@ -3,7 +3,7 @@ from sqlalchemy import select, update, delete, insert
 from uuid import UUID
 from typing import TypeVar, List, Type, Union, Optional, Dict, Any
 from src.persistance.domain.async_data_repository import AsyncDataRepository
-from src.persistance.infrastructure.sqlalchemy.setup import AsyncSessionFactory
+from src.persistance.infrastructure.sqlalchemy.setup import get_async_session_factory
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +13,7 @@ M = TypeVar("M") # sqlalchemy model
 class AsyncSqlAlchemyDataRepository(AsyncDataRepository[E, M]):
     def __init__(self, model: Type[M]):
         self.__model = model
-        self.__session_factory = AsyncSessionFactory
+        self.__session_factory = get_async_session_factory()
 
     async def create(
         self, 
