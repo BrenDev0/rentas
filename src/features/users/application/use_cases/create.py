@@ -1,16 +1,29 @@
-from src.persistance.domain import async_data_repository
-from src.features.users.domain import schemas, entities
+from src.features.users.domain import repository, schemas
+from src.features.users.application.service import UsersService
 
 class CreateUser:
     def __init__(
         self,
-        user_repository: async_data_repository.AsyncDataRepository
+        users_repository: repository.UserRepository,
+        users_service: UsersService
+        
     ):
-        self.__user_repository = user_repository
+        self.__users_repository = users_repository
+        self.__users_service = users_service
+        
 
-    
     async def execute(
         self,
-        data: schemas.CreateUserSchema
+        data: schemas.CreateUserSchema,
+        profile_type: str
     ):
-        pass
+        partial_entity = self.__users_service.prepare_new_user_data(
+            data=data,
+            profile_type=profile_type
+        )
+
+        enitity = await self.__users_repository.create(
+            data=partial_entity
+        )
+
+        return self.__users_service.get_public_schema(enitity)

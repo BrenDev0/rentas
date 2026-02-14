@@ -6,11 +6,11 @@ class HashingService(ABC):
        raise NotImplementedError()
 
     @abstractmethod
-    def hash_password(self, password: str) -> str:
+    def hash(self, password: str) -> str:
         raise NotImplementedError()
 
     @abstractmethod
-    def compare_password(
+    def compare(
         password: str, 
         hashed_password: str, 
         detail: str = "Incorrect password", 

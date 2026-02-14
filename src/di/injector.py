@@ -16,7 +16,7 @@ class Injector:
         }
 
 
-    def resolve(self, instance_type):
+    def inject(self, instance_type):
         if instance_type in self._singletons:
             return self._singletons[instance_type]
         

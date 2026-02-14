@@ -1,15 +1,24 @@
 import logging
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from src.app.interface.strawberry.router import get_strawberry_graphql_router
 from src.app.interface.fastapi.middleware.hmac import verify_hmac
 from src.security.domain.exceptions import HMACException
+from src.di.injector import Injector
+from src.app.setup import setup_dependencies
 
 logger = logging.getLogger(__name__)
 
+def lifespan(app: FastAPI):
+    api_injecor = Injector()
+    setup_dependencies(injector=api_injecor)
+    app.state.injector = api_injecor
+    yield
+
 def create_fastapi_app():
-    app = FastAPI()
+    app = FastAPI(lifespan=lifespan)
 
     # CORS setup
     app.add_middleware(
@@ -24,7 +33,7 @@ def create_fastapi_app():
     @app.exception_handler(HMACException)
     async def hmac_exception_handler(request, exc: HMACException):
         return JSONResponse(
-            status_code=401,
+            status_code=403,
             content={"errors": [exc.detail]}
         )
 
