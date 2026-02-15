@@ -2,6 +2,7 @@ from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 from uuid import UUID
 from datetime import datetime
+from typing import Optional
 from src.features.users.domain.entities import ProfileType
 
 class UserConfig(BaseModel):
@@ -27,4 +28,9 @@ class CreateUserSchema(UserConfig):
     phone: str
     email: str
     password: str
+
+
+class UpdateUserSchema(UserConfig):
+    name: Optional[str] = None
+    phone: Optional[str] = None
 
