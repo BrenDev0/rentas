@@ -1,10 +1,10 @@
 from uuid import uuid4
 from sqlalchemy import Column, String, DateTime, func
 from sqlalchemy.dialects.postgresql import UUID
-from src.persistance.infrastructure.sqlalchemy import setup, async_data_repository
-from src.features.users.domain.entities import User
+from src.persistance import SqlAlchemyBase, AsyncSqlAlchemyDataRepository
+from ...domain import User
 
-class SqlAlchemyUser(setup.SqlAlchemyBase):
+class SqlAlchemyUser(SqlAlchemyBase):
     __tablename__ = "Users"
 
     user_id=Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
@@ -16,7 +16,7 @@ class SqlAlchemyUser(setup.SqlAlchemyBase):
     password=Column(String, nullable=False)
     created_at=Column(DateTime(timezone=True), nullable=False, server_default=func.now())
     
-class SqlAlchemyUserRepository(async_data_repository.AsyncSqlAlchemyDataRepository[User, SqlAlchemyUser]):
+class SqlAlchemyUserRepository(AsyncSqlAlchemyDataRepository[User, SqlAlchemyUser]):
     def __init__(self):
         super().__init__(SqlAlchemyUser)
 

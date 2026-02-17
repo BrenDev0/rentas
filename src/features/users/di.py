@@ -1,13 +1,13 @@
-from src.di.injector import Injector
-from src.features.users.domain import repository
-from src.features.users.infrastructure.sqlalchemy.users_repository import SqlAlchemyUserRepository
-from src.features.users.application.service import UsersService
-from src.features.users.application.use_cases import (
-    create
+from src.di import Injector
+from .domain import UserRepository
+from .infrastructure import SqlAlchemyUserRepository
+from .application import UsersService
+from .application import (
+    CreateUser
 )
 
 def register_app_dependencies(injector: Injector):
-    injector.register(repository.UserRepository, SqlAlchemyUserRepository)
+    injector.register(UserRepository, SqlAlchemyUserRepository)
     injector.register(UsersService)
-    injector.register(create.CreateUser)
+    injector.register(CreateUser)
     

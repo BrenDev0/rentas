@@ -1,6 +1,6 @@
 from uuid import UUID
-from src.persistance.domain.async_data_repository import AsyncDataRepository
-from src.persistance.domain.exceptions import ResourceNotFoundException
+from ...domain import AsyncDataRepository
+from ...domain import ResourceNotFoundException
 
 class ResourceExists:
     def __init__(

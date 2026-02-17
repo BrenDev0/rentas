@@ -1,6 +1,6 @@
 from uuid import UUID
-from src.features.users.domain.repository import UserRepository
-from src.features.users.application.service import UsersService
+from ...domain import UserRepository
+from ...application import UsersService
 
 
 class DeleteUser:

@@ -1,13 +1,13 @@
 from src.di.injector import Injector
-from src.security.domain.services import (
+from .domain.services import (
     encryption,
     hashing,
     web_token
 )
 
-from src.security.infrastructure.bcrypt.hashing import BcryptHashingService
-from src.security.infrastructure.fernet.encryption import FernetEncryptionService
-from src.security.infrastructure.jwt.web_token import JwtWebTokenService
+from .infrastructure import BcryptHashingService
+from .infrastructure.fernet.encryption import FernetEncryptionService
+from .infrastructure.jwt.web_token import JwtWebTokenService
 
 def register_shared_dependencies(injector: Injector):
     injector.register(encryption.EncryptionService, FernetEncryptionService)

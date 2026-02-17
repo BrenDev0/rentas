@@ -1,10 +1,10 @@
-from src.features.users.domain import repository, schemas
-from src.features.users.application.service import UsersService
+from ...domain import UserRepository, CreateUserSchema
+from ...application import UsersService
 
 class CreateUser:
     def __init__(
         self,
-        users_repository: repository.UserRepository,
+        users_repository: UserRepository,
         users_service: UsersService
         
     ):
@@ -14,7 +14,7 @@ class CreateUser:
 
     async def execute(
         self,
-        data: schemas.CreateUserSchema,
+        data: CreateUserSchema,
         profile_type: str
     ):
         partial_entity = self.__users_service.prepare_new_user_data(

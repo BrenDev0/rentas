@@ -1,20 +1,20 @@
-from src.features.users.domain import entities, schemas
-from src.security.domain.services import encryption, hashing
+from ..domain import User, UserPublic, CreateUserSchema
+from src.security import EncryptionService, HashingService
 
 class UsersService:
     def __init__(
         self,
-        hashing: hashing.HashingService,
-        encryption: encryption.EncryptionService
+        hashing: HashingService,
+        encryption: EncryptionService
     ):
         self.__hashing = hashing
         self.__encryption = encryption
         
     def get_public_schema(
         self,
-        entity: entities.User
-    ) -> schemas.UserPublic:
-        return schemas.UserPublic(
+        entity: User
+    ) -> UserPublic:
+        return UserPublic(
             user_id=entity.user_id,
             name=self.__encryption.decrypt(entity.name),
             phone=self.__encryption.decrypt(entity.phone),
@@ -24,9 +24,9 @@ class UsersService:
     
     def prepare_new_user_data(
         self,
-        data: schemas.CreateUserSchema,
+        data: CreateUserSchema,
         profile_type: str
-    ) -> entities.User:
+    ) -> User:
         encrypted_email = self.__encryption.encrypt(data.email)
         encrypted_name = self.__encryption.encrypt(data.name)
         encrypted_phone = self.__encryption.encrypt(data.phone)
@@ -34,7 +34,7 @@ class UsersService:
         hashed_password = self.__hashing.hash(data.password)
         hashed_email = self.__hashing.hash_for_search(data.email)
 
-        partial_entity = entities.User(
+        partial_entity = User(
             name=encrypted_name,
             phone=encrypted_phone,
             email=encrypted_email,
