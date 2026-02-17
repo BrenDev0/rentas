@@ -1,5 +1,3 @@
-from dotenv import load_dotenv
-load_dotenv()
 import os
 import logging
 from src.app.interface.fastapi.server import create_fastapi_app
