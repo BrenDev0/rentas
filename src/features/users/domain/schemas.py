@@ -3,7 +3,6 @@ from pydantic.alias_generators import to_camel
 from uuid import UUID
 from datetime import datetime
 from typing import Optional
-from src.features.users.domain.entities import ProfileType
 
 class UserConfig(BaseModel):
     model_config=ConfigDict(
@@ -19,7 +18,7 @@ class UserPublic(UserConfig):
     name: str
     phone: str
     email: str
-    profile_type: ProfileType
+    profile_type: str
     created_at: datetime
 
 class CreateUserSchema(UserConfig):

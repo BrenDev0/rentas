@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from src.app.setup import setup_dependencies
+from src.app.setup.di import setup_dependencies
 from src.security import HMACException
 from src.di.injector import Injector
 

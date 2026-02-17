@@ -23,9 +23,11 @@ class AsyncSqlAlchemyDataRepository(AsyncDataRepository[E, M]):
             async with self.__session_factory() as session:
 
                 model = self._to_model(entity)
-                stmt = insert(self.__model).values(**model)
-
-                result = await session.execute(stmt)
+                session.add(model)
+                await session.commit()
+                await session.refresh(model)
+            
+                return self._to_entity(model)
         
         except Exception as e:
             logger.error(f"Error Inserting {self.__model.__name__}: {e}", exc_info=True)
