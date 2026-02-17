@@ -3,7 +3,6 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from src.app.interface.strawberry.router import get_strawberry_graphql_router
 from src.app.interface.fastapi.middleware.hmac import verify_hmac
 from src.security.domain.exceptions import HMACException
 from src.di.injector import Injector
@@ -54,10 +53,6 @@ def create_fastapi_app():
         This endpoints verifies server status.
         """
         return {"status": "Renters ok"}
-    
-  
-    # graphql_router = get_strawberry_graphql_router()
-    # app.include_router(graphql_router, dependencies=[Depends(verify_hmac)])
 
     return app
     
