@@ -12,7 +12,7 @@ __author__ = "BrenDev0"
 __description__ = "Di for app"
 
 
-from injector import Injector
+from .injector import Injector
 
 __all__ = [
     "Injector"
