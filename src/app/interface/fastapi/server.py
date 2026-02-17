@@ -1,5 +1,5 @@
 import logging
-from contextlib import contextmanager
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,12 +10,14 @@ from src.di.injector import Injector
 
 logger = logging.getLogger(__name__)
 
-@contextmanager
-def lifespan(app: FastAPI):
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     api_injecor = Injector()
     setup_dependencies(injector=api_injecor)
     app.state.injector = api_injecor
+
     yield
+
 
 def create_fastapi_app():
     app = FastAPI(lifespan=lifespan)

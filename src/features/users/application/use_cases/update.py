@@ -1,5 +1,5 @@
 from uuid import UUID
-from ...application import UsersService
+from ..service import UsersService
 from ...domain import UserRepository, UpdateUserSchema
 
 

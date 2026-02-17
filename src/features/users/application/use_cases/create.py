@@ -1,5 +1,5 @@
 from ...domain import UserRepository, CreateUserSchema
-from ...application import UsersService
+from ..service import UsersService
 
 class CreateUser:
     def __init__(
