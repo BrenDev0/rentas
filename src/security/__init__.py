@@ -32,15 +32,12 @@ from .infrastructure import (
 
 __all__ = [
     #### Domain ####
-
-    ## Exceptions ##
     "HMACException",
     "IncorrectPassword",
     "InvalidToken",
     "ExpiredToken",
     "PermissionsException",
 
-    ## Services ##
     "EncryptionService",
     "HashingService",
     "WebTokenService",
