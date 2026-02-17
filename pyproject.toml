@@ -10,7 +10,6 @@ dependencies = [
     "fastapi>=0.128.0",
     "pyjwt>=2.11.0",
     "sqlalchemy[asyncio]>=2.0.46",
-    "strawberry-graphql[fastapi]>=0.289.8",
     "uvicorn>=0.40.0",
 ]
 
