@@ -56,8 +56,8 @@ def create_fastapi_app():
         return {"status": "Renters ok"}
     
   
-    graphql_router = get_strawberry_graphql_router()
-    app.include_router(graphql_router, dependencies=[Depends(verify_hmac)])
+    # graphql_router = get_strawberry_graphql_router()
+    # app.include_router(graphql_router, dependencies=[Depends(verify_hmac)])
 
     return app
     
