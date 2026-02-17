@@ -1,15 +1,16 @@
 import logging
-from contextlib import asynccontextmanager
-from fastapi import FastAPI, Depends, Request
+from contextlib import contextmanager
+from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from src.app.interface.fastapi.middleware.hmac import verify_hmac
-from src.security.domain.exceptions import HMACException
-from src.di.injector import Injector
 from src.app.setup import setup_dependencies
+from src.security import HMACException
+from src.di.injector import Injector
+
 
 logger = logging.getLogger(__name__)
 
+@contextmanager
 def lifespan(app: FastAPI):
     api_injecor = Injector()
     setup_dependencies(injector=api_injecor)
