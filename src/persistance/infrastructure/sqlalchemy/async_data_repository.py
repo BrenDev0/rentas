@@ -3,7 +3,7 @@ from sqlalchemy import select, update, delete, insert
 from uuid import UUID
 from typing import TypeVar, List, Type, Union, Optional, Dict, Any
 from ...domain import AsyncDataRepository
-from ...infrastructure import get_async_session_factory
+from .setup import get_async_session_factory
 
 logger = logging.getLogger(__name__)
 
