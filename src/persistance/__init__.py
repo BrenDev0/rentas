@@ -1,9 +1,6 @@
 """
-Basic repositories, rules and exceptions.
-
-
-This package provides a clean architecture approach:
-- Domain: Abstract interfaces and exceptions
+Structure:
+- Domain: Abstract interfaces, schemas, entities and models
 - Infrastructure: Framework implementations 
 - Application: Domain applications (use cases, rules)
 - Di registry
@@ -11,7 +8,7 @@ This package provides a clean architecture approach:
 
 __version__ = "1.0.0"
 __author__ = "BrenDev0"
-__description__ = "persistance utilities for app"
+__description__ = "persistance package for app"
 
 from .domain import (
     ResourceNotFoundException,

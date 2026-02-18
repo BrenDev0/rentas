@@ -3,8 +3,7 @@ import jwt
 import logging
 import time
 from typing import Dict, Any
-from src.security.domain.exceptions import ExpiredToken, InvalidToken
-from src.security.domain.services.web_token import WebTokenService
+from ...domain import ExpiredToken, InvalidToken, WebTokenService
 logger = logging.getLogger(__name__)
 
 class JwtWebTokenService(WebTokenService):

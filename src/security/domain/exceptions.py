@@ -1,20 +1,44 @@
-class ExpiredToken(Exception):
-    def __init__(self, detail: str = "Token expired"):
-        super().__init__(detail)
+from src.app import AppException
 
-class InvalidToken(Exception):
-    def __init__(self, detail: str = "Invalid token"):
-        super().__init__(detail)
+class ExpiredToken(AppException):
+    def __init__(
+        self,
+        detail: str = "Token expired", 
+        status_code: int = 401
+    ):
+        super().__init__(detail, status_code)
 
-class IncorrectPassword(Exception):
-    def __init__(self, detail: str):
-        super().__init__(detail)
+class InvalidToken(AppException):
+    def __init__(
+        self, 
+        detail: str = "Invalid token",
+        status_code: int = 401
+):      
+        super().__init__(detail, status_code)
+       
 
-class PermissionsException(Exception):
-    def __init__(self, detail: str = "Forbidden"):
-        super().__init__(detail)
+class IncorrectPassword(AppException):
+    def __init__(
+        self,
+        detail: str = "Incorrect password",
+        status_code: int = 400
+    ):
+        super().__init__(detail, status_code)
+    
+
+class PermissionsException(AppException):
+    def __init__(
+        self, 
+        detail: str = "Forbidden",
+        status_code: int = 403
+    ):
+        super().__init__(detail, status_code)
+
 
 class HMACException(Exception):
-    def __init__(self, detail: str = "HMAC verification failed"):
-        self.detail = detail
-        super().__init__(detail)
+    def __init__(
+        self, 
+        detail: str = "HMAC verification failed",
+        status_code: int = 403
+    ):
+        super().__init__(detail, status_code)

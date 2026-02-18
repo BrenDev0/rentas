@@ -3,9 +3,9 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from src.app.setup.di import setup_dependencies
-from src.security import HMACException
 from src.di.injector import Injector
+from ...setup.di import setup_dependencies
+from ...domain import AppException
 
 
 logger = logging.getLogger(__name__)
@@ -31,22 +31,25 @@ def create_fastapi_app():
         allow_headers=["*"],
     )
 
-        
-    @app.exception_handler(HMACException)
-    async def hmac_exception_handler(request, exc: HMACException):
+    @app.exception_handler(AppException)
+    async def app_error_handler(request, exc: AppException):
+        print(str(exc))
         return JSONResponse(
-            status_code=403,
-            content={"errors": [exc.detail]}
+            status_code=int(exc.status_code),
+            content={"detaile": str(exc.detail)}
         )
+    
 
 
     @app.exception_handler(Exception)
-    async def exception_handler(request, exc: Exception):
+    async def server_error_handler(request, exc: Exception):
         print(str(exc))
         return JSONResponse(
             status_code=500,
-            content={"errors": ["Unable to process request at this time"]}
+            content={"detail": "Unable to process request at this time"}
         )
+    
+    
 
 
     @app.get("/", tags=["Internal"])

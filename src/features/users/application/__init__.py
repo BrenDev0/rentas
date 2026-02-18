@@ -5,7 +5,6 @@ from .service import UsersService
 
 
 __all__ = [
-    ## Use cases ##
     "CreateUser",
     "UpdateUser",
     "DeleteUser",
