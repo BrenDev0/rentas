@@ -1,5 +1,6 @@
 from src.security import HashingService, IncorrectPassword
 from src.persistance import ResourceNotFoundException
+from typing import cast
 from ...domain import UserRepository, User
 from ...application import UsersService
 
@@ -21,13 +22,15 @@ class UserLogin:
     ):
         hashed_email = self.__hashing.hash_for_search(email)
 
-        user: User = await self.__users_repository.select_one(
+        user = await self.__users_repository.select_one(
             key="email_hash",
             value=hashed_email
         )
 
         if not user:
             raise ResourceNotFoundException(detail="Incorrect email or password", status_code=400)
+        
+        user = cast(User, user)
         
         if not self.__hashing.compare(
             unhashed=password,

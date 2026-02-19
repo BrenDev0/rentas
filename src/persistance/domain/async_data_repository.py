@@ -11,7 +11,7 @@ class AsyncDataRepository(ABC, Generic[E, M]):
     async def create(
         self, 
         data: E
-    ):
+    ) -> E:
         raise NotImplementedError
 
     @abstractmethod
@@ -48,7 +48,7 @@ class AsyncDataRepository(ABC, Generic[E, M]):
         key: str,
         value: Union[str, int, UUID],
         changes: Dict[str, Any]
-    ) -> E | None:
+    ) -> E:
         raise NotImplementedError
     
     @abstractmethod
@@ -65,7 +65,7 @@ class AsyncDataRepository(ABC, Generic[E, M]):
         self,
         key: str,
         value: Union[str, int, UUID]
-    ) -> E | None:
+    ) -> E:
         raise NotImplementedError
     
     @abstractmethod

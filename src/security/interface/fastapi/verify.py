@@ -1,20 +1,18 @@
 from fastapi import Request, HTTPException, Depends
-from uuid import UUID
-from src.di import get_injector, Injector
+from src.di import Injector, get_injector
 from ...domain import (
-    ExpiredToken, 
-    InvalidToken,
-    WebTokenService
+    WebTokenService,
+    ExpiredToken,
+    InvalidToken
 )
 
-
-def user_authentication(
+def user_verification(
     request: Request,
     injector: Injector = Depends(get_injector)
-) -> UUID:
+)-> int:
     """
-    User authentication for incoming requests
-    Use with Depends() on specific routes
+    User verification for incoming requests
+    Use with Depends() on specific routes that require verification code from user email
     """
     auth_header = request.headers.get("Authorization", None)
     if not auth_header or not auth_header.startswith("Bearer "):
@@ -25,15 +23,16 @@ def user_authentication(
 
     try:
         token_payload = web_token_service.decode(token)
-        user_id: UUID = token_payload.get("user_id", None)
+        verification_code: int = token_payload.get("verification_code", None)
 
-        if not user_id:
+        if not verification_code:
             raise HTTPException(status_code=401, detail="Invalid token")
         
-        return user_id
+        return verification_code
     
     except (ExpiredToken, InvalidToken, ValueError) as e:
         raise HTTPException(status_code=401, detail=str(e))
     
     except HTTPException:
         raise
+    

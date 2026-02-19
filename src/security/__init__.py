@@ -27,7 +27,8 @@ from .infrastructure import (
 )
 
 from .interface import (
-    authenticate_user,
+    user_authentication,
+    user_verification,
     verify_hmac
 )
 
@@ -51,6 +52,7 @@ __all__ = [
     "JwtWebTokenService",
 
     #### Interface ####
-    "authenticate_user",
-    "verify_hmac"
+    "user_authentication",
+    "verify_hmac",
+    "user_verification"
 ]

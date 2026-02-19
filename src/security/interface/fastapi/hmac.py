@@ -6,15 +6,15 @@ import time
 from fastapi import Request, HTTPException
 logger = logging.getLogger(__name__)
 
-async def verify_hmac(request: Request) -> bool:
+def verify_hmac(request: Request) -> bool:
     """
     Verify HMAC signature for incoming requests
     Use with Depends() on specific routes that need HMAC verification
     """
 
     ## disactivate for development
-    project_enviornment = os.getenv("ENVIRONMENT")
-    if project_enviornment != "PRODUCTION":
+    project_environment = os.getenv("ENVIRONMENT")
+    if project_environment != "PRODUCTION":
         return True
 
     secret = os.getenv("HMAC_SECRET")
@@ -33,7 +33,7 @@ async def verify_hmac(request: Request) -> bool:
     try:
         timestamp = int(payload)
     except ValueError:
-        logger.error(f"Invalid timestamp ::: timestamp: {timestamp}")
+        logger.error(f"Invalid timestamp ::: timestamp: {payload}")
         raise HTTPException(status_code=403, detail="Forbidden")
     
     current_time = int(time.time() * 1000)  # Current time in milliseconds

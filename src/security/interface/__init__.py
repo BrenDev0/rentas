@@ -1,7 +1,9 @@
-from .fastapi.auth import authenticate_user
+from .fastapi.auth import user_authentication
+from .fastapi.verify import user_verification
 from .fastapi.hmac import verify_hmac
 
 __all__ = [
-    "authenticate_user",
+    "user_authentication",
+    "user_verification",
     "verify_hmac"
 ]

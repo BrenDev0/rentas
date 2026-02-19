@@ -1,5 +1,9 @@
-from ..domain import User, UserPublic, CreateUserSchema
 from src.security import EncryptionService, HashingService
+from typing import cast
+from uuid import UUID
+from datetime import datetime
+from ..domain import User, UserPublic, CreateUserSchema
+
 
 class UsersService:
     def __init__(
@@ -15,11 +19,12 @@ class UsersService:
         entity: User
     ) -> UserPublic:
         return UserPublic(
-            user_id=entity.user_id,
+            user_id=cast(UUID, entity.user_id),
+            email=self.__encryption.decrypt(entity.email),
             name=self.__encryption.decrypt(entity.name),
             phone=self.__encryption.decrypt(entity.phone),
             profile_type=entity.profile_type,
-            created_at=entity.created_at
+            created_at=cast(datetime, entity.created_at)
         )
     
     def prepare_new_user_data(

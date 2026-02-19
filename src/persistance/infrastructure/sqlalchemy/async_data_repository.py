@@ -1,5 +1,5 @@
 import logging
-from sqlalchemy import select, update, delete, insert
+from sqlalchemy import select, update, delete
 from uuid import UUID
 from typing import TypeVar, List, Type, Union, Optional, Dict, Any
 from ...domain import AsyncDataRepository
@@ -18,7 +18,7 @@ class AsyncSqlAlchemyDataRepository(AsyncDataRepository[E, M]):
     async def create(
         self, 
         entity: E
-    ):
+    ) -> E:
         try:
             async with self.__session_factory() as session:
 
@@ -98,7 +98,7 @@ class AsyncSqlAlchemyDataRepository(AsyncDataRepository[E, M]):
         key: str, 
         value: Union[str, int, UUID], 
         changes: Dict[str, Any]
-    ) -> E | None:
+    ) -> E:
         async with self.__session_factory() as session:
             try:
                 stmt = update(self.__model).where(getattr(self.__model, key) == value).values(**changes).returning(self.__model)
@@ -107,7 +107,7 @@ class AsyncSqlAlchemyDataRepository(AsyncDataRepository[E, M]):
 
                 await session.commit()
 
-                return self._to_entity(result) if result else None
+                return self._to_entity(result)
             
             except Exception as e:
                 logger.error(f"Error updating {self.__model.__name__}: {e}", exc_info=True)
@@ -119,7 +119,7 @@ class AsyncSqlAlchemyDataRepository(AsyncDataRepository[E, M]):
         key: str, 
         value: Union[str, int, UUID],
         changes: Dict[str, Any]
-    ) -> List[E] | None:
+    ) -> List[E]:
         try:
             async with self.__session_factory() as session:
                 stmt = update(self.__model).where(getattr(self.__model, key) == value).values(**changes).returning(self.__model)
@@ -130,7 +130,7 @@ class AsyncSqlAlchemyDataRepository(AsyncDataRepository[E, M]):
 
                 return [
                     self._to_entity(row) for row in result
-                ] if result else None
+                ]
         
         except Exception as e:
             logger.error(f"Error Updating {self.__model.__name__}: {e}", exc_info=True)
@@ -141,7 +141,7 @@ class AsyncSqlAlchemyDataRepository(AsyncDataRepository[E, M]):
         self, 
         key: str, 
         value: Union[str, int, UUID]
-    ) -> E | None:
+    ) -> E:
         try:
             async with self.__session_factory() as session:
                 stmt = delete(self.__model).where(getattr(self.__model, key) == value)
@@ -150,7 +150,7 @@ class AsyncSqlAlchemyDataRepository(AsyncDataRepository[E, M]):
 
                 await session.commit()
 
-                return self._to_entity(result) if result else None
+                return self._to_entity(result)
         
         except Exception as e:
             logger.error(f"Error deleting {self.__model.__name__}: {e}", exc_info=True)
@@ -161,10 +161,10 @@ class AsyncSqlAlchemyDataRepository(AsyncDataRepository[E, M]):
         self, 
         key: str, 
         value: Union[str, int, UUID]
-    ) -> List[E] | None:
+    ) -> List[E]:
         try:
             async with self.__session_factory() as session:
-                stmt = delete(self.__model).wherer(getattr(self.__model, key) == value)
+                stmt = delete(self.__model).where(getattr(self.__model, key) == value)
 
                 result = await session.execute(stmt).scalars().all()
 
@@ -172,7 +172,7 @@ class AsyncSqlAlchemyDataRepository(AsyncDataRepository[E, M]):
 
                 return [
                     self._to_entity(row) for row in result
-                ] if result else None
+                ]
         
         except Exception as e:
             logger.error(f"Error deleting {self.__model.__name__}: {e}", exc_info=True)
