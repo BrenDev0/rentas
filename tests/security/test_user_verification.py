@@ -31,22 +31,6 @@ def test_valid_token(
     assert verification_code == 123456
 
 
-def test_missing_headers(
-    mock_injector,
-    mock_request
-):
-    mock_request.headers = {}
-    mock_web_token_service = MagicMock()
-    mock_injector.inject.return_value = mock_web_token_service
-    mock_web_token_service.decode.return_value = {}
-
-    with pytest.raises(HTTPException) as exc_info:
-        user_verification(mock_request, mock_injector)
-
-    assert exc_info.value.status_code == 401
-    assert exc_info.value.detail == "Unautrhorized. Missing required auth headers"
-
-
 
 def test_missing_headers(
     mock_injector,
