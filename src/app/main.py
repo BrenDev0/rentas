@@ -1,10 +1,6 @@
 import os
 import logging
 from src.app.interface.fastapi.server import create_fastapi_app
-from dotenv import load_dotenv
-
-load_dotenv()
-
 level = os.getenv("LOGGER_LEVEL", logging.INFO)
 
 logging.basicConfig(
