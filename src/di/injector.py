@@ -48,7 +48,7 @@ class Injector:
                     f"Missing type hint for dependency '{name}' in {cls.__name__}"
                 )
         
-            dependency = self.resolve(dependency_type)
+            dependency = self.inject(dependency_type)
             dependencies.append(dependency)
 
         return cls(*dependencies)

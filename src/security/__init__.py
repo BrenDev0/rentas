@@ -32,6 +32,8 @@ from .interface import (
     verify_hmac
 )
 
+from .utils import get_random_code
+
 
 __all__ = [
     #### Domain ####
@@ -54,5 +56,8 @@ __all__ = [
     #### Interface ####
     "user_authentication",
     "verify_hmac",
-    "user_verification"
+    "user_verification",
+
+    #### utils #### 
+    "get_random_code",
 ]

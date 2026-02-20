@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from src.di.injector import Injector
+from src.features.communications.interface.fastapi import routes as communications_routes
 from ...setup.di import setup_dependencies
 from ...domain import AppException
 
@@ -59,6 +60,9 @@ def create_fastapi_app():
         This endpoints verifies server status.
         """
         return {"status": "Renters ok"}
+    
+
+    app.include_router(communications_routes.router)
 
     return app
     

@@ -12,3 +12,8 @@ __author__ = "BrenDev0"
 __description__ = "Users package for app"
 
 
+from .domain import UserRepository
+
+__all__ = [
+    "UserRepository"
+]
