@@ -18,11 +18,12 @@ __all__ = [
     "IncorrectPassword",
     "InvalidToken",
     "ExpiredToken",
-    "PermissionsException"
+    "PermissionsException",
 
 
     ## Services ## 
     "EncryptionService",
     "HashingService",
-    "HashingService"
+    "HashingService",
+    "WebTokenService"
 ]

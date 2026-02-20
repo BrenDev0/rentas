@@ -1,7 +1,6 @@
 import bcrypt
 import hashlib
-from src.security.domain.services.hashing import HashingService
-from src.security.domain.exceptions import IncorrectPassword
+from ...domain import HashingService
 
 class BcryptHashingService(HashingService):
     def hash_for_search(self, data: str) -> str:
@@ -16,14 +15,8 @@ class BcryptHashingService(HashingService):
 
     def compare(
         self,
-        password: str, 
-        hashed_password: str, 
-        detail: str = "Incorrect password", 
-        throw_error: bool = True
+        unhashed: str, 
+        hashed: str,
     ) -> bool:
-        if not bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8')):
-            if throw_error:
-                raise IncorrectPassword(detail=detail)
-            else:
-                return False
-        return True
+        return bcrypt.checkpw(unhashed.encode('utf-8'), hashed.encode('utf-8'))
+            

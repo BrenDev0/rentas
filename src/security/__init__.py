@@ -1,8 +1,5 @@
 """
-Basic security tools for encryption, hashing, and JWT handling.
-
-
-This package provides a clean architecture approach:
+structure:
 - Domain: Abstract interfaces and exceptions
 - Infrastructure: Framework implementations 
 - Di registry
@@ -10,7 +7,7 @@ This package provides a clean architecture approach:
 
 __version__ = "1.0.0"
 __author__ = "BrenDev0"
-__description__ = "Security utilities for app"
+__description__ = "Security package for app"
 
 from .domain import (
     HMACException, 
@@ -29,6 +26,14 @@ from .infrastructure import (
     JwtWebTokenService
 )
 
+from .interface import (
+    user_authentication,
+    user_verification,
+    verify_hmac
+)
+
+from .utils import get_random_code
+
 
 __all__ = [
     #### Domain ####
@@ -46,5 +51,13 @@ __all__ = [
     #### Infrastructure ####
     "FernetEncryptionService",
     "BcryptHashingService",
-    "JwtWebTokenService"
+    "JwtWebTokenService",
+
+    #### Interface ####
+    "user_authentication",
+    "verify_hmac",
+    "user_verification",
+
+    #### utils #### 
+    "get_random_code",
 ]

@@ -11,9 +11,8 @@ class HashingService(ABC):
 
     @abstractmethod
     def compare(
-        password: str, 
-        hashed_password: str, 
-        detail: str = "Incorrect password", 
-        throw_error: bool = True
+        self,
+        unhashed: str, 
+        hashed: str,
     ) -> bool:
         raise NotImplementedError()

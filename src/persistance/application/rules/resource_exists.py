@@ -1,4 +1,5 @@
 from uuid import UUID
+from typing import Union
 from ...domain import AsyncDataRepository
 from ...domain import ResourceNotFoundException
 
@@ -13,11 +14,15 @@ class ResourceExists:
     async def validate(
         self,
         key: str,
-        value: UUID
+        value: Union[UUID, str, int],
+        throw_error: bool = False
     ):
         resource = await self._repository.select_one(key, value)
 
         if not resource:
-            raise ResourceNotFoundException(f"Resource with {key}: {value} not found")
+            if throw_error:
+                raise ResourceNotFoundException(f"Resource with {key}: {value} not found")
+            
+            return None
         
         return resource

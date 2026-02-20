@@ -7,15 +7,10 @@ from .schemas import (
 )
 
 __all__ = [
-    ## Entites ##
     "User",
-
-    ## Schemas ##
     "UserPublic",
     "UpdateUserSchema",
     "CreateUserSchema",
-
-    ## Repository ##
     "UserRepository"
 
 ]

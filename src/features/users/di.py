@@ -6,7 +6,7 @@ from .application import (
     CreateUser
 )
 
-def register_app_dependencies(injector: Injector):
+def register_dependencies(injector: Injector):
     injector.register(UserRepository, SqlAlchemyUserRepository)
     injector.register(UsersService)
     injector.register(CreateUser)

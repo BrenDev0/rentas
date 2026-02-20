@@ -13,7 +13,7 @@ def get_async_engine():
     global _async_engine
 
     if _async_engine is None:
-        db_url = os.getenv("DB_URL")
+        db_url = os.getenv("DATABASE_URL")
 
         if not db_url:
             raise ValueError("DB variables not set")
