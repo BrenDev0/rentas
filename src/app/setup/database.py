@@ -2,7 +2,7 @@ from src.persistance.infrastructure.sqlalchemy.setup import get_async_engine
 import logging
 
 from src.persistance.infrastructure.sqlalchemy.setup import SqlAlchemyBase
-from src.features.users.infrastructure.sqlalchemy.users_repository import SqlAlchemyUser
+from src.features.users.infrastructure.sqlalchemy.users_repository import SqlAlchemyUser # noqa: F401
 logger = logging.getLogger(__name__)
 
 async def create_tables():
