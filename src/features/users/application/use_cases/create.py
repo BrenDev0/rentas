@@ -1,4 +1,4 @@
-from ...domain import UserRepository, CreateUserSchema
+from ...domain import UserRepository, CreateUserRequest
 from ..service import UsersService
 
 class CreateUser:
@@ -14,7 +14,7 @@ class CreateUser:
 
     async def execute(
         self,
-        data: CreateUserSchema,
+        data: CreateUserRequest,
         profile_type: str
     ):
         partial_entity = self.__users_service.prepare_new_user_data(

@@ -2,15 +2,17 @@ from .entities import User
 from .repository import UserRepository
 from .schemas import (
     UserPublic, 
-    UpdateUserSchema, 
-    CreateUserSchema
+    UpdateUserRequest,
+    CreateUserRequest,
+    UserLoginRequest
 )
 
 __all__ = [
     "User",
+    "UserRepository",
     "UserPublic",
-    "UpdateUserSchema",
-    "CreateUserSchema",
-    "UserRepository"
+    "UpdateUserRequest",
+    "CreateUserRequest",
+    "UserLoginRequest"
 
 ]

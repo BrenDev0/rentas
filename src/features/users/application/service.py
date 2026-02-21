@@ -2,7 +2,7 @@ from src.security import EncryptionService, HashingService
 from typing import cast
 from uuid import UUID
 from datetime import datetime
-from ..domain import User, UserPublic, CreateUserSchema
+from ..domain import User, UserPublic, CreateUserRequest
 
 
 class UsersService:
@@ -29,7 +29,7 @@ class UsersService:
     
     def prepare_new_user_data(
         self,
-        data: CreateUserSchema,
+        data: CreateUserRequest,
         profile_type: str
     ) -> User:
         encrypted_email = self.__encryption.encrypt(data.email)

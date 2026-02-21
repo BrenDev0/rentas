@@ -1,6 +1,6 @@
 from uuid import UUID
 from ..service import UsersService
-from ...domain import UserRepository, UpdateUserSchema
+from ...domain import UserRepository, UpdateUserRequest
 
 
 class UpdateUser:
@@ -15,7 +15,7 @@ class UpdateUser:
     async def execute(
         self,
         user_id: UUID,
-        changes: UpdateUserSchema
+        changes: UpdateUserRequest
     ): 
         updated_user = await self.__users_repository.update_one(
             key="user_id",

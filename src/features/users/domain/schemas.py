@@ -21,7 +21,7 @@ class UserPublic(UserConfig):
     profile_type: str
     created_at: datetime
 
-class CreateUserSchema(UserConfig):
+class CreateUserRequest(UserConfig):
     verification_code: int
     name: str
     phone: str
@@ -29,7 +29,11 @@ class CreateUserSchema(UserConfig):
     password: str
 
 
-class UpdateUserSchema(UserConfig):
+class UserLoginRequest(UserConfig):
+    email: str
+    password: str
+
+class UpdateUserRequest(UserConfig):
     name: Optional[str] = None
     phone: Optional[str] = None
 
