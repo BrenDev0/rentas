@@ -45,7 +45,7 @@ async def test_success(
         created_at=datetime.now()
     )
 
-    fake_request_data = schemas.CreateUserSchema(
+    fake_request_data = schemas.CreateUserRequest(
         verification_code=123,
         name="name",
         phone="phone",
