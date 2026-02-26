@@ -1,6 +1,6 @@
 from uuid import UUID
 from ...domain import UserRepository
-from ..service import UsersService
+from ..services.users_service import UsersService
 
 
 class DeleteUser:

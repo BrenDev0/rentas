@@ -12,7 +12,8 @@ __description__ = "persistance package for app"
 
 from .domain import (
     ResourceNotFoundException,
-    AsyncDataRepository
+    AsyncDataRepository,
+    CollisionException
 )
 
 from .application import (
@@ -30,6 +31,7 @@ __all__ = [
     #### Domain ####
     "ResourceNotFoundException",
     "AsyncDataRepository",
+    "CollisionException",
 
 
     #### Application ####

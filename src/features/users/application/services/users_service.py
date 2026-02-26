@@ -2,7 +2,7 @@ from src.security import EncryptionService, HashingService
 from typing import cast
 from uuid import UUID
 from datetime import datetime
-from ..domain import User, UserPublic, CreateUserRequest
+from ...domain import User, UserPublic, CreateUserRequest
 
 
 class UsersService:

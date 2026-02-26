@@ -5,7 +5,7 @@ class EmailAvailability(ABC):
     Check if email is availible before user registration
     """
     @abstractmethod
-    async def is_available(
+    async def validate(
         self, 
         email: str
     ) -> bool:
