@@ -1,5 +1,5 @@
 from uuid import UUID
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Request, Depends, Body
 from src.di import get_injector, Injector
 from src.security import (
     user_verification, 
@@ -8,21 +8,24 @@ from src.security import (
 )
 from ...domain import (
     UserPublic,
-    CreateUserSchema,
+    CreateUserRequest,
+    UserLoginRequest
 )
 from ...application import (
     DeleteUser,
-    CreateUser
+    CreateUser,
+    UserLogin
 )
 
 router = APIRouter(
     prefix="/users",
+    tags=["Users"]
 )
 
 @router.post("/", status_code=200, response_model=UserPublic)
 async def create_user(
     request: Request,
-    data: CreateUserSchema,
+    data: CreateUserRequest = Body(...),
     verification_code: int = Depends(user_verification),
     injector: Injector = Depends(get_injector)
 ):
@@ -34,6 +37,20 @@ async def create_user(
     return await use_case.execute(
         data=data,
         profile_type="OWNER"
+    )
+
+
+@router.post("/login", status_code=200, response_model=UserPublic)
+def user_login(
+    request: Request,
+    data: UserLoginRequest = Body(...),
+    injector: Injector = Depends(get_injector)
+):
+    use_case: UserLogin = injector.inject(UserLogin)
+
+    return use_case.execute(
+        email=data.email,
+        password=data.password
     )
 
 @router.delete("/", status_code=200, response_model=UserPublic)
