@@ -1,5 +1,6 @@
+from src.security import PermissionsException
 from ...domain import UserRepository, CreateUserRequest
-from ..service import UsersService
+from ..services.users_service import UsersService
 
 class CreateUser:
     def __init__(
@@ -14,9 +15,13 @@ class CreateUser:
 
     async def execute(
         self,
+        verification_code: int,
         data: CreateUserRequest,
         profile_type: str
     ):
+        if int(verification_code) != int(data.verification_code):
+            raise PermissionsException(detail="Verification failed", status_code=401)
+        
         partial_entity = self.__users_service.prepare_new_user_data(
             data=data,
             profile_type=profile_type

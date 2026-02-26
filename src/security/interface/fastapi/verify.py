@@ -3,7 +3,8 @@ from src.di import Injector, get_injector
 from ...domain import (
     WebTokenService,
     ExpiredToken,
-    InvalidToken
+    InvalidToken,
+    EncryptionService
 )
 
 def user_verification(
@@ -28,11 +29,16 @@ def user_verification(
         if not verification_code:
             raise HTTPException(status_code=401, detail="Invalid token")
         
-        return verification_code
+        encryption: EncryptionService = injector.inject(EncryptionService)
+
+        return int(encryption.decrypt(verification_code))
     
     except (ExpiredToken, InvalidToken, ValueError) as e:
         raise HTTPException(status_code=401, detail=str(e))
     
     except HTTPException:
+        raise
+
+    except Exception:
         raise
     

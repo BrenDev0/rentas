@@ -3,8 +3,7 @@ from fastapi import APIRouter, Request, Depends, Body
 from src.di import get_injector, Injector
 from src.security import (
     user_verification, 
-    user_authentication, 
-    PermissionsException
+    user_authentication
 )
 from ...domain import (
     UserPublic,
@@ -29,13 +28,10 @@ async def create_user(
     verification_code: int = Depends(user_verification),
     injector: Injector = Depends(get_injector)
 ):
-    if int(verification_code) != int(data.verification_code):
-        raise PermissionsException(detail="Verification failed", status_code=401)
-    
-    use_case: CreateUser = injector.inject(CreateUser)
-    
+    use_case: CreateUser = injector.inject(CreateUser)  
     return await use_case.execute(
         data=data,
+        verification_code=verification_code,
         profile_type="OWNER"
     )
 
@@ -47,7 +43,6 @@ def user_login(
     injector: Injector = Depends(get_injector)
 ):
     use_case: UserLogin = injector.inject(UserLogin)
-
     return use_case.execute(
         email=data.email,
         password=data.password
@@ -60,7 +55,6 @@ async def delete_user(
     injector: Injector = Depends(get_injector)
 ):
     use_case: DeleteUser = injector.inject(DeleteUser)
-
     return await use_case.execute(
         user_id=user_id
     )
