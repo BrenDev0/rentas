@@ -1,4 +1,5 @@
 from uuid import UUID
+from src.persistance import ResourceExists
 from ...domain import UserRepository
 from ..services.users_service import UsersService
 
@@ -16,6 +17,28 @@ class DeleteUser:
         self,
         user_id: UUID
     ):
+        """
+        Delete user
+
+        Args:
+            user_id: from token 
+
+        Returs: 
+            Deleted user schema
+
+        Raises:
+            ResourceNotFound exception if no user found in db 
+        """
+        user_exists_rule = ResourceExists(
+            repository=self.__users_repository
+        )
+
+        await user_exists_rule.validate(
+            key="user_id",
+            value=user_id,
+            throw_error=True
+        )
+        
         deleted_user = await self.__users_repository.delete_one(
             key="user_id",
             value=user_id
