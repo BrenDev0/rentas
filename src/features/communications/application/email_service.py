@@ -5,11 +5,19 @@ from ..domain import Email
 
 class EmailService:
     def __init__(self):
-        self.host = os.getenv("MAILER_HOST")
-        self.port = int(os.getenv("MAILER_PORT", 587))
-        self.user = os.getenv("MAILER_USER")
-        self.password = os.getenv("MAILER_PASSWORD")
-        self.from_addr = os.getenv("MAILER_USER")
+        host = os.getenv("MAILER_HOST")
+        port = int(os.getenv("MAILER_PORT", 587))
+        user = os.getenv("MAILER_USER")
+        password = os.getenv("MAILER_PASSWORD")
+        from_addr = os.getenv("MAILER_USER")
+        if not all([host, port, user, password, from_addr]):
+            raise ValueError("smtp variables not set")
+        
+        self._host = host
+        self._port = port
+        self._user = user
+        self._password = password
+        self._from_addr = from_addr
 
 
     def send_email(
@@ -24,9 +32,9 @@ class EmailService:
         msg["X-Mailgun-Track"] = "no"
 
         try:
-            with smtplib.SMTP(self.host, self.port) as server:
+            with smtplib.SMTP(self._host, self._port) as server:
                 server.starttls()
-                server.login(self.user, self.password)
+                server.login(self._user, self._password)
                 server.send_message(msg)
                 
         except Exception:
