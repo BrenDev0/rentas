@@ -1,6 +1,6 @@
 from src.security import PermissionsException
 from ...domain import UserRepository, CreateUserRequest
-from ..services.users_service import UsersService
+from ..users_service import UsersService
 
 class CreateUser:
     def __init__(

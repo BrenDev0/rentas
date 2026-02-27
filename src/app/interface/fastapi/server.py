@@ -4,7 +4,10 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from src.di.injector import Injector
+
 from src.features.communications.interface.fastapi import routes as communications_routes
+from src.features.users.interface.fastapi import routes as users_routes
+
 from ...setup.di import setup_dependencies
 from ...domain import AppException
 
@@ -23,6 +26,7 @@ async def lifespan(app: FastAPI):
 def create_fastapi_app():
     app = FastAPI(lifespan=lifespan)
 
+
     # CORS setup
     app.add_middleware(
         CORSMiddleware,
@@ -31,6 +35,7 @@ def create_fastapi_app():
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
 
     @app.exception_handler(AppException)
     async def app_error_handler(request, exc: AppException):
@@ -41,7 +46,6 @@ def create_fastapi_app():
         )
     
 
-
     @app.exception_handler(Exception)
     async def server_error_handler(request, exc: Exception):
         print(str(exc))
@@ -50,8 +54,6 @@ def create_fastapi_app():
             content={"detail": "Unable to process request at this time"}
         )
     
-    
-
 
     @app.get("/", tags=["Internal"])
     async def health():
@@ -60,9 +62,11 @@ def create_fastapi_app():
         This endpoints verifies server status.
         """
         return {"status": "Renters ok"}
-    
 
+
+    app.include_router(users_routes.router)
     app.include_router(communications_routes.router)
+
 
     return app
     

@@ -2,7 +2,7 @@ from src.security import HashingService, IncorrectPassword
 from src.persistance import ResourceNotFoundException
 from typing import cast
 from ...domain import UserRepository, User
-from ..services.users_service import UsersService
+from ..users_service import UsersService
 
 
 class UserLogin:

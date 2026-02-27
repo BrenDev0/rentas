@@ -12,8 +12,9 @@ __author__ = "BrenDev0"
 __description__ = "Users package for app"
 
 
-from .domain import UserRepository
+from .domain import UserRepository, UserExists
 
 __all__ = [
-    "UserRepository"
+    "UserRepository",
+    "UserExists"
 ]

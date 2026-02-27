@@ -7,12 +7,15 @@ from .schemas import (
     UserLoginRequest
 )
 
+from .rules import UserExists
+
 __all__ = [
     "User",
     "UserRepository",
     "UserPublic",
     "UpdateUserRequest",
     "CreateUserRequest",
-    "UserLoginRequest"
+    "UserLoginRequest",
+    "UserExists"
 
 ]

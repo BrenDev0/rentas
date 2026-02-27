@@ -1,5 +1,5 @@
 from uuid import UUID
-from ..services.users_service import UsersService
+from ..users_service import UsersService
 from ...domain import UserRepository, UpdateUserRequest
 
 

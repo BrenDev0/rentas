@@ -2,7 +2,7 @@ from src.features.communications import EmailAvailability
 from src.security import HashingService
 from ...domain import UserRepository
 
-class EmailAvailabilityService(EmailAvailability):
+class EmailAvailabilityRule(EmailAvailability):
     def __init__(
         self,
         hashing: HashingService,

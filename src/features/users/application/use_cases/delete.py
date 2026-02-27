@@ -1,7 +1,7 @@
 from uuid import UUID
 from src.persistance import ResourceExists
 from ...domain import UserRepository
-from ..services.users_service import UsersService
+from ..users_service import UsersService
 
 
 class DeleteUser:

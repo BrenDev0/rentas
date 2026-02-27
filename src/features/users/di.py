@@ -1,6 +1,6 @@
 from src.di import Injector
 from src.features.communications import EmailAvailability
-from .domain import UserRepository
+from .domain import UserRepository, UserExists
 from .infrastructure import SqlAlchemyUserRepository
 from .application import UsersService
 from .application import (
@@ -8,7 +8,8 @@ from .application import (
     UpdateUser,
     UserLogin,
     DeleteUser,
-    EmailAvailabilityService
+    EmailAvailabilityRule,
+    UserExistRule
 )
 
 def register_dependencies(injector: Injector):
@@ -18,5 +19,6 @@ def register_dependencies(injector: Injector):
     injector.register(UpdateUser)
     injector.register(UserLogin)
     injector.register(DeleteUser)
-    injector.register(EmailAvailability, EmailAvailabilityService)
+    injector.register(EmailAvailability, EmailAvailabilityRule)
+    injector.register(UserExists, UserExistRule)
     

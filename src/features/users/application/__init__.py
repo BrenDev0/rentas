@@ -2,8 +2,9 @@ from .use_cases.create import CreateUser
 from .use_cases.delete import DeleteUser
 from .use_cases.update import UpdateUser
 from .use_cases.login import UserLogin
-from .services.users_service import UsersService
-from .services.email_availability import EmailAvailabilityService
+from .users_service import UsersService
+from .rules.email_availability import EmailAvailabilityRule
+from .rules.user_exists import UserExistRule
 
 
 
@@ -13,5 +14,6 @@ __all__ = [
     "DeleteUser",
     "UsersService",
     "UserLogin",
-    "EmailAvailabilityService"
+    "EmailAvailabilityRule",
+    "UserExistRule"
 ]
